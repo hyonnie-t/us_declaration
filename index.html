@@ -13,12 +13,15 @@
     <div class="eyebrow">📜 세계사 주제28 · 교과서 142~143쪽</div>
     <h1>독립 선언문, 누구를 위한 말이었을까?</h1>
     <ol id="steps" class="steps" aria-label="진행 단계" hidden>
-      <li data-n="1"><span>1</span>쓰기</li>
-      <li data-n="2"><span>2</span>읽기</li>
-      <li data-n="3"><span>3</span>마무리</li>
+      <li data-k="find"><span>1</span>찾기</li>
+      <li data-k="write"><span>2</span>쓰기</li>
+      <li data-k="read"><span>3</span>읽기</li>
+      <li data-k="wrap"><span>4</span>마무리</li>
     </ol>
+    <p id="sub" class="sub" hidden></p>
   </header>
 
+  <!-- 시작 -->
   <section id="s0" class="screen">
     <div class="card">
       <h2>👋 시작하기</h2>
@@ -31,24 +34,72 @@
     </div>
   </section>
 
-  <section id="s1" class="screen" hidden>
-    <div class="card"><h2>① 식민지 대표가 되어 보자</h2><div class="bubble"><p id="step1Intro"></p></div></div>
+  <!-- 1. 찾기 (3화면) -->
+  <section id="a1" class="screen" hidden>
     <div class="card">
-      <h3>📖 흐름 먼저 읽기</h3>
+      <h2>① 선언문에서 찾아 보자</h2>
+      <div class="bubble"><p id="findIntro"></p></div>
+      <details id="declSourceBox" hidden><summary>선언문 글 펼치기</summary><p id="declSource" class="source-text"></p></details>
+    </div>
+    <div id="findA1"></div>
+    <button id="a1Next" class="btn wide">다음</button>
+    <p id="a1Err" class="err" role="alert"></p>
+  </section>
+
+  <section id="a2" class="screen" hidden>
+    <div id="findA2"></div>
+    <div class="btn-row nav">
+      <button id="a2Back" class="btn ghost">이전</button>
+      <button id="a2Next" class="btn">다음</button>
+    </div>
+    <p id="a2Err" class="err" role="alert"></p>
+  </section>
+
+  <section id="a3" class="screen" hidden>
+    <div class="card">
+      <h3 id="reasonHead"></h3>
+      <p class="prompt" id="reasonQ"></p>
       <ol id="timeline" class="timeline"></ol>
     </div>
     <div class="card">
-      <h3>🧭 독립이 필요한 이유, 하나만 골라 봐</h3>
+      <div class="q first" id="reasonEventQ"></div>
       <div id="eventCards" class="choice-grid"></div>
     </div>
+    <div class="btn-row nav">
+      <button id="a3Back" class="btn ghost">이전</button>
+      <button id="a3Next" class="btn">다음</button>
+    </div>
+    <p id="a3Err" class="err" role="alert"></p>
+  </section>
+
+  <!-- 2. 쓰기 (3화면) -->
+  <section id="w1" class="screen" hidden>
     <div class="card">
-      <h3>📜 선언문 문장 하나를 골라 봐</h3>
-      <p class="note">교과서 143쪽 「독립 선언문」 상자를 펼쳐 놓고 골라.</p>
-      <details id="declSourceBox" hidden><summary>선언문 글 펼치기</summary><p id="declSource" class="source-text"></p></details>
-      <div id="declCards" class="choice-grid one"></div>
+      <h2>② 식민지 대표가 되어 보자</h2>
+      <div class="bubble"><p id="step1Intro"></p></div>
     </div>
     <div class="card">
-      <h3>✏️ 대표로서 주장하는 글 쓰기</h3><p class="task">식민지 대표로서 <b>우리가 독립해도 되는 이유</b>를 2~3문장으로 주장해 봐.<br>① 위에서 고른 <b>이유</b>를 근거로 쓰고, ② 고른 <b>선언문 문장</b>을 끌어와서 말해 줘.</p>
+      <h3>📜 찾은 것 중 하나를 골라 봐</h3>
+      <p class="note" id="declNote"></p>
+      <div id="declCards" class="choice-grid one"></div>
+    </div>
+    <div class="btn-row nav">
+      <button id="w1Back" class="btn ghost">이전</button>
+      <button id="w1Next" class="btn">다음</button>
+    </div>
+    <p id="w1Err" class="err" role="alert"></p>
+  </section>
+
+  <section id="w2" class="screen" hidden>
+    <div class="card recap">
+      <div class="recap-label first">내가 고른 독립 이유</div>
+      <p id="s1Reason" class="recap-text"></p>
+      <div class="recap-label">근거로 쓸 조항</div>
+      <p id="s1Decl" class="recap-text"></p>
+    </div>
+    <div class="card">
+      <h3>✏️ 대표로서 주장하는 글 쓰기</h3>
+      <p class="task">식민지 대표로서 <b>우리가 독립해도 되는 이유</b>를 <b>2문장</b>으로 주장해 봐.<br>고른 독립 이유와 조항을 둘 다 써 줘.</p>
       <details class="hint"><summary>💡 막막하면 힌트 보기</summary>
         <ul id="step1Hints"></ul>
         <div class="chips-label">시작 구절 (골라서 이어 써도 돼)</div>
@@ -56,45 +107,62 @@
       </details>
       <textarea id="step1Text" rows="5" placeholder="여기에 주장하는 글을 써 줘."></textarea>
       <div class="count"><span id="step1Count">0</span>자 <span id="step1Msg"></span></div>
+    </div>
+    <div class="btn-row nav">
+      <button id="w2Back" class="btn ghost">이전</button>
       <button id="step1Submit" class="btn" disabled>다 썼어</button>
-      <p id="step1Err" class="err" role="alert"></p>
     </div>
-    <div class="card" id="exampleCard">
-      <button id="exampleBtn" class="btn ghost" disabled>다른 대표가 쓴 글 보기 (다 쓰면 열려)</button>
-      <div id="examples" hidden></div>
-    </div>
-    <button id="toStep2" class="btn wide" hidden>다음: 다른 입장에서 읽기</button>
   </section>
 
-  <section id="s2" class="screen" hidden>
-    <div class="card recap">
-      <h2>② 다른 입장에서 읽어 보자</h2>
-      <div class="recap-label">내가 쓴 글</div>
-      <p id="recapText" class="recap-text"></p>
-      <div class="recap-label">내가 고른 선언문 문장</div>
-      <p id="recapDecl" class="recap-text"></p>
-    </div>
+  <section id="w3" class="screen" hidden>
     <div class="card">
-      <h3>🔍 한 명만 골라도 돼</h3><p class="note">더 궁금하면 한 명 더 골라도 돼. (최대 2명)</p>
+      <h2>다른 대표들은 이렇게 썼어</h2>
+      <p class="note">상상해서 쓴 예시야. 내 글이랑 비교해 봐.</p>
+      <div class="recap-label">내 글</div>
+      <p id="w3Mine" class="recap-text"></p>
+      <div id="examples"></div>
+    </div>
+    <button id="toRoles" class="btn wide">다음: 다른 입장에서 읽기</button>
+  </section>
+
+  <!-- 3. 읽기 (입장 고르기 + 입장당 2화면) -->
+  <section id="r0" class="screen" hidden>
+    <div class="card">
+      <h2>③ 다른 입장에서 읽어 보자</h2>
+      <p class="note">한 명만 골라도 충분해. 더 궁금하면 한 명 더 골라도 돼. (최대 2명)</p>
       <div id="roleTabs" class="choice-grid"></div>
       <p id="roleErr" class="err" role="alert"></p>
     </div>
-    <div id="roleForms"></div>
-    <button id="toStep3" class="btn wide">다음: 마무리</button>
-    <p id="s2Err" class="err" role="alert"></p>
+    <button id="r0Next" class="btn wide">다음</button>
   </section>
 
-  <section id="s3" class="screen" hidden>
+  <section id="rr" class="screen" hidden>
+    <div class="card recap">
+      <div class="recap-label first">내가 근거로 고른 조항</div>
+      <p id="recapDecl" class="recap-text"></p>
+      <details class="mine"><summary>내가 쓴 글 다시 보기</summary><p id="recapText" class="recap-text"></p></details>
+    </div>
+    <div id="roleForms"></div>
+    <button id="rrNext" class="btn wide">다음</button>
+    <p id="rrErr" class="err" role="alert"></p>
+  </section>
+
+  <!-- 4. 마무리 (2화면) -->
+  <section id="f1" class="screen" hidden>
     <div class="card">
-      <h2>③ 마무리, 한 줄이면 돼</h2>
+      <h2>④ 마무리, 한 줄이면 돼</h2>
       <p class="prompt" id="finalPrompt"></p>
       <details class="hint"><summary>💡 막막하면 힌트 보기</summary><ul id="finalHints"></ul></details>
       <textarea id="finalLine" rows="2" placeholder="한 줄로 써 봐"></textarea>
       <p id="s3Err" class="err" role="alert"></p>
       <button id="finishBtn" class="btn">저장하고 패들렛 글 만들기</button>
     </div>
-    <div class="card" id="outCard" hidden>
-      <h3>🎉 다 했어! 패들렛에 올릴 글</h3>
+  </section>
+
+  <section id="f2" class="screen" hidden>
+    <div class="card">
+      <h2>🎉 다 했어!</h2>
+      <p class="note">아래 글을 복사해서 우리 반 패들렛에 올려 줘.</p>
       <textarea id="outText" rows="12" readonly></textarea>
       <div class="btn-row">
         <button id="copyBtn" class="btn">텍스트 복사</button>
