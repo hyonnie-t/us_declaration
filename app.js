@@ -1,9 +1,8 @@
 /* 주제28 「독립 선언문」 웹앱 — 로직(app.js) */
 const CONFIG = {
   SHEET_WEBAPP_URL: "https://script.google.com/macros/s/AKfycbyXSjCfWY_HiZFqW_OBR-FQDoIfF1z_STqyKWUI31MacHeY3u7hbirFSFDvW-5yuUHaJQ/exec",
-  /* 포털 커리큘럼 관리에서 이 두 id로 활동을 등록해야 진행률에 잡힌다 */
-  GAME_NAME_STEP1: "28차시_독립선언문_글쓰기",
-  GAME_NAME_FINAL: "28차시_독립선언문_한계파악",
+  /* 포털 커리큘럼 관리에 이 id 하나로 활동을 등록한다 */
+  GAME_NAME: "28차시_독립선언문",
   STEP1_MIN: 15,
   REASON_MIN: 10,
   SHORT_MIN: 5,
@@ -127,38 +126,18 @@ function updateStep1() {
   else if (t.length && n < 2) msg = "2~3문장이면 딱 좋아. 제출은 할 수 있어.";
   $("step1Msg").textContent = msg;
   const ready = S.eventId && S.declId && t.length >= CONFIG.STEP1_MIN;
-  $("step1Submit").disabled = !ready || S.sending;
+  $("step1Submit").disabled = !ready || S.step1Submitted;
 }
 
-async function submitStep1() {
-  if (S.sending) return;
-  S.sending = true; updateStep1();
-  $("step1Err").textContent = "";
-  const text = $("step1Text").value.trim();
-  const ev = byId(EVENT_CARDS, S.eventId), dc = byId(DECL_CARDS, S.declId);
-  const payload = {
-    studentId: S.sid, studentName: S.name, gameName: CONFIG.GAME_NAME_STEP1,
-    choiceSummary: ev.label + " / " + S.declId, diffSummary: "", reflection: text,
-    choicesJson: JSON.stringify({
-      sid: S.sid, name: S.name, ban: S.ban, eventCardId: S.eventId, declId: S.declId,
-      step1Text: text, step1Submitted: true, ts: new Date().toISOString()
-    })
-  };
-  try {
-    await postToSheet(payload);
-    S.step1Submitted = true;
-    $("step1Text").readOnly = true;
-    $("step1Submit").textContent = "제출 완료";
-    $("exampleBtn").disabled = false;
-    $("exampleBtn").textContent = "다른 대표가 쓴 글 보기";
-    $("toStep2").hidden = false;
-  } catch (e) {
-    $("step1Err").textContent = "저장이 안 됐어. 인터넷을 확인하고 다시 눌러 줘.";
-    S.sending = false; updateStep1();
-    return;
-  }
-  S.sending = false;
+function submitStep1() {
+  /* 1단계는 화면 안에서만 잠그고, 시트 저장은 마무리에서 한 번만 한다(같은 id로 두 번 저장하면 포털이 1단계만 끝나도 완료로 볼 수 있음) */
+  S.step1Submitted = true;
+  $("step1Text").readOnly = true;
+  $("step1Submit").textContent = "다 썼어";
   $("step1Submit").disabled = true;
+  $("exampleBtn").disabled = false;
+  $("exampleBtn").textContent = "다른 대표가 쓴 글 보기";
+  $("toStep2").hidden = false;
 }
 
 function showExamples() {
@@ -340,7 +319,7 @@ async function finish() {
   const cards = S.roles.map(id => Object.assign({}, S.cards[id], { customRoleName: S.cards[id].customRoleName.trim() }));
   const step1Text = $("step1Text").value.trim();
   const payload = {
-    studentId: S.sid, studentName: S.name, gameName: CONFIG.GAME_NAME_FINAL,
+    studentId: S.sid, studentName: S.name, gameName: CONFIG.GAME_NAME,
     choiceSummary: S.roles.map(roleName).join(" / "), diffSummary: "",
     reflection: fl + "\n\n" + cards.map(c => c.reason.trim()).join("\n"),
     choicesJson: JSON.stringify({
