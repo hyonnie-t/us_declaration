@@ -13,7 +13,7 @@ const CONFIG = {
 const S = {
   sid: "", name: "", ban: 0, preview: false,
   eventId: "", declId: "", step1Submitted: false,
-  roles: [], cards: {}, finalLine: "", sending: false
+  roles: [], cards: {}, finalLine: "", sending: false, padletUrl: ""
 };
 
 const $ = id => document.getElementById(id);
@@ -58,6 +58,24 @@ async function postToSheet(payload) {
   return json;
 }
 
+/* 패들렛 링크는 백엔드 학년정보(포트폴리오)에서 가져온다. 조회 실패 시에만 data.js의 예비 링크를 쓴다. */
+function ensureUrlScheme(u) {
+  u = String(u || "").trim();
+  return u && !/^https?:\/\//i.test(u) ? "https://" + u : u;
+}
+
+async function loadPadletUrl(grade, ban) {
+  try {
+    const res = await fetch(CONFIG.SHEET_WEBAPP_URL + "?mode=curriculum");
+    const json = await res.json();
+    const pf = json && json.grades && json.grades[String(grade)] && json.grades[String(grade)].portfolio;
+    if (!pf) return "";
+    return ensureUrlScheme(pf.urlByBan ? (pf.urlByBan[ban] || pf.urlByBan[String(ban)] || "") : (pf.url || ""));
+  } catch (e) {
+    return "";
+  }
+}
+
 /* ── 화면 0 ── */
 function startApp() {
   const sid = $("sid").value.trim();
@@ -65,7 +83,9 @@ function startApp() {
   if (!parseSid(sid)) { $("startErr").textContent = "학번은 숫자 5자리로 써 줘. (예: 30512)"; return; }
   if (!name) { $("startErr").textContent = "이름을 써 줘."; return; }
   $("startErr").textContent = "";
-  S.sid = sid; S.name = name; S.ban = parseSid(sid).ban;
+  const p = parseSid(sid);
+  S.sid = sid; S.name = name; S.ban = p.ban;
+  loadPadletUrl(p.grade, p.ban).then(u => { S.padletUrl = u; });
   show(1);
 }
 
@@ -339,9 +359,9 @@ async function finish() {
   $("finishBtn").textContent = "저장 완료";
   $("finalLine").readOnly = true;
   $("outText").value = buildOutText();
-  const link = PADLET_BY_BAN[S.ban];
+  const link = S.padletUrl || PADLET_BY_BAN[S.ban];
   if (link) { $("padletBtn").href = link; $("padletBtn").hidden = false; }
-  else { $("padletBtn").hidden = true; $("outMsg").textContent = "우리 반 패들렛 링크는 선생님께 물어봐."; }
+  else { $("padletBtn").hidden = true; $("outMsg").textContent = "우리 반 패들렛 링크를 못 찾았어. 선생님께 물어봐."; }
   $("outCard").hidden = false;
   $("outCard").scrollIntoView({ behavior: "smooth" });
 }

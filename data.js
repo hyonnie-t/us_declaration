@@ -4,6 +4,7 @@
 /* 교과서 번역문 슬롯 — 필요하면 효니가 직접 붙인다. 비어 있으면 화면에 안 나온다. */
 const DECL_SOURCE_TEXT = "";
 
+/* 예비용 — 평소엔 백엔드 학년정보의 패들렛 링크를 쓴다 */
 const PADLET_BY_BAN = {
   5: "https://padlet.com/dy_sch03/2026-2-3-5-cewq8vec8p3ew2yn",
   6: "https://padlet.com/dy_sch03/2026-2-3-6-2xngg3v8pstkvld9",
