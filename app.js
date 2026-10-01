@@ -244,7 +244,7 @@ function buildRoleForm(rc) {
     form.appendChild(box);
   });
 
-  form.appendChild(el("div", "q", "① 내가 고른 문장이 이 사람에게 닿았을까?"));
+  form.appendChild(el("div", "q", "① 내가 고른 문장, 이 사람은 공감이 될까?"));
   form.appendChild(radioGroup(REACHED_OPTS, v => { c.reached = v; }));
 
   form.appendChild(el("div", "q", "② 이유 — " + rc.reasonPrompt));
@@ -300,7 +300,7 @@ function buildOutText() {
   S.roles.forEach(id => {
     const c = S.cards[id];
     lines.push("■ 다른 입장에서 읽기: " + roleName(id));
-    lines.push("내 문장이 닿았을까? " + byId(REACHED_OPTS, c.reached).label);
+    lines.push("내가 고른 문장에 공감이 될까? " + byId(REACHED_OPTS, c.reached).label);
     lines.push(c.reason.trim());
     lines.push("선언문의 한계라고 볼 수 있을까? " + byId(LIMIT_OPTS, c.limitJudgement).label);
     if (byId(ROLE_CARDS, id).bubble) lines.push("말풍선: " + c.bubble.trim());

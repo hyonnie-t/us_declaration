@@ -62,9 +62,9 @@ const EXAMPLES = [
 
 /* 화면 2. 입장 카드 */
 const REACHED_OPTS = [
-  { id: "reached", label: "닿았어" },
-  { id: "partial", label: "일부만 닿았어" },
-  { id: "not", label: "안 닿았어" }
+  { id: "reached", label: "공감이 돼" },
+  { id: "partial", label: "조금은 공감이 돼" },
+  { id: "not", label: "공감이 안 돼" }
 ];
 const LIMIT_OPTS = [
   { id: "limit", label: "한계야" },
@@ -123,4 +123,4 @@ const ROLE_CARDS = [
 ];
 
 const FINAL_PROMPT = "선언문의 '모든 인간'은 누구까지였을까? 내 판단 한 줄.";
-const FINAL_HINTS = ["입장 카드에서 닿은 사람과 안 닿은 사람을 떠올려 봐.", "'누구까지'에 내가 선을 긋는다면 어디일까?"];
+const FINAL_HINTS = ["입장 카드에서 공감이 됐을 것 같은 사람과 안 됐을 것 같은 사람을 떠올려 봐.", "'누구까지'에 내가 선을 긋는다면 어디일까?"];
