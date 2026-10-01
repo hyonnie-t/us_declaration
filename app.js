@@ -141,6 +141,7 @@ function startApp() {
   $("startErr").textContent = "";
   const p = parseSid(sid);
   S.sid = sid; S.name = name; S.ban = p.ban;
+  FocusGuard.start({ key: CONFIG.GAME_NAME + ":" + sid }); // 작성 중 화면 이탈·붙여넣기 기록 (history26 snippets/focus_guard.js)
   loadPadletUrl(p.grade, p.ban).then(u => { S.padletUrl = u; });
   show("a1");
 }
@@ -459,6 +460,7 @@ async function finish() {
       ts: new Date().toISOString()
     })
   };
+  Object.assign(payload, FocusGuard.payload());
   try {
     await postToSheet(payload);
   } catch (e) {
