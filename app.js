@@ -22,6 +22,11 @@ const byId = (arr, id) => arr.find(x => x.id === id);
 
 function show(n) {
   ["s0", "s1", "s2", "s3"].forEach(k => { $(k).hidden = (k !== "s" + n); });
+  $("steps").hidden = (n === 0);
+  document.querySelectorAll("#steps li").forEach(li => {
+    const k = Number(li.dataset.n);
+    li.className = k === n ? "on" : (k < n ? "done" : "");
+  });
   window.scrollTo(0, 0);
 }
 
@@ -119,7 +124,7 @@ function updateStep1() {
   const n = sentenceCount(t);
   let msg = "";
   if (t.length && t.length < CONFIG.STEP1_MIN) msg = "한 문장은 써야 제출할 수 있어.";
-  else if (t.length && n < 3) msg = "3~5문장이면 더 좋아. 제출은 할 수 있어.";
+  else if (t.length && n < 2) msg = "2~3문장이면 딱 좋아. 제출은 할 수 있어.";
   $("step1Msg").textContent = msg;
   const ready = S.eventId && S.declId && t.length >= CONFIG.STEP1_MIN;
   $("step1Submit").disabled = !ready || S.sending;
@@ -263,18 +268,16 @@ function buildRoleForm(rc) {
   form.appendChild(el("div", "q", "① 내가 고른 문장이 이 사람에게 닿았을까?"));
   form.appendChild(radioGroup(REACHED_OPTS, v => { c.reached = v; }));
 
-  form.appendChild(el("div", "q", "② 이유를 3~4문장으로 써 봐. " + rc.reasonPrompt));
+  form.appendChild(el("div", "q", "② 이유 — " + rc.reasonPrompt));
   form.appendChild(hintBox(rc.hints));
   form.appendChild(textField(5, v => { c.reason = v; }));
 
   form.appendChild(el("div", "q", "③ 이걸 선언문의 한계라고 볼 수 있을까?"));
   form.appendChild(radioGroup(LIMIT_OPTS, v => { c.limitJudgement = v; }));
-  form.appendChild(el("div", "q", "한 줄 이유"));
-  form.appendChild(textField(2, v => { c.limitReason = v; }));
 
   if (rc.bubble) {
     const bb = el("div", "bubble-box");
-    bb.appendChild(el("div", "q", "④ 말풍선 (상상해서 쓰는 말이야)"));
+    bb.appendChild(el("div", "q", "④ 💬 말풍선 한마디"));
     bb.appendChild(el("p", "", BUBBLE_PROMPT));
     bb.appendChild(textField(2, v => { c.bubble = v; }));
     form.appendChild(bb);
@@ -291,7 +294,6 @@ function validateStep2() {
     if (!c.reached) return nm + " 카드: ①을 골라 줘.";
     if (c.reason.trim().length < CONFIG.REASON_MIN) return nm + " 카드: 이유를 조금 더 써 줘.";
     if (!c.limitJudgement) return nm + " 카드: ③을 골라 줘.";
-    if (c.limitReason.trim().length < CONFIG.SHORT_MIN) return nm + " 카드: 한 줄 이유를 써 줘.";
     if (rc.bubble && c.bubble.trim().length < CONFIG.SHORT_MIN) return nm + " 카드: 말풍선을 써 줘.";
   }
   return "";
@@ -321,7 +323,7 @@ function buildOutText() {
     lines.push("■ 다른 입장에서 읽기: " + roleName(id));
     lines.push("내 문장이 닿았을까? " + byId(REACHED_OPTS, c.reached).label);
     lines.push(c.reason.trim());
-    lines.push("선언문의 한계라고 볼 수 있을까? " + byId(LIMIT_OPTS, c.limitJudgement).label + " — " + c.limitReason.trim());
+    lines.push("선언문의 한계라고 볼 수 있을까? " + byId(LIMIT_OPTS, c.limitJudgement).label);
     if (byId(ROLE_CARDS, id).bubble) lines.push("말풍선: " + c.bubble.trim());
     lines.push("");
   });
