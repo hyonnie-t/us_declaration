@@ -2,7 +2,7 @@
 const CONFIG = {
   SHEET_WEBAPP_URL: "https://script.google.com/macros/s/AKfycbyXSjCfWY_HiZFqW_OBR-FQDoIfF1z_STqyKWUI31MacHeY3u7hbirFSFDvW-5yuUHaJQ/exec",
   /* 포털 커리큘럼 관리에 이 id 하나로 활동을 등록한다 */
-  GAME_NAME: "28차시_독립선언문",
+  GAME_NAME: "28차시_독립선언문_글쓰기",
   STEP1_MIN: 15,
   REASON_MIN: 10,
   SHORT_MIN: 5,
