@@ -148,7 +148,7 @@ function startApp() {
 /* ── 1. 찾기: 선언문 상자에서 조항 4개, 본문에서 독립 이유 ── */
 function renderFind() {
   $("findIntro").textContent = FIND_INTRO;
-  if (DECL_SOURCE_TEXT) { $("declSource").textContent = DECL_SOURCE_TEXT; $("declSourceBox").hidden = false; }
+  if (DECL_SOURCE_TEXT) document.querySelectorAll(".decl-src").forEach(d => { d.querySelector(".source-text").textContent = DECL_SOURCE_TEXT; d.hidden = false; });
 
   FIND_CARDS.forEach((fc, i) => {
     const card = el("div", "card find-card");

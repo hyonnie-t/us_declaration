@@ -76,3 +76,6 @@ input:focus,textarea:focus,button:focus-visible,summary:focus-visible{outline:3p
 .mine summary{cursor:pointer;min-height:44px;display:flex;align-items:center;color:var(--blue);font-weight:700}
 .source-text{white-space:pre-wrap}
 @media (max-width:560px){.choice-grid{grid-template-columns:1fr}.btn-row:not(.nav) .btn{width:100%}.steps li{font-size:15px;padding:6px 8px}.steps li span{display:none}}
+.decl-src{background:var(--sun);border-radius:12px;padding:4px 14px;margin:10px 0}
+.decl-src.card{border:1px solid var(--line);margin:0 0 14px}
+.decl-src summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:700;color:#8a5a00}
