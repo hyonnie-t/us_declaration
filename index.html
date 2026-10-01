@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>독립 선언문 읽기</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="previewBar" class="preview-bar" hidden>미리보기 모드 — 저장되지 않아</div>
+<main class="page">
+  <header class="book-head">
+    <div class="eyebrow">세계사 주제28 · 교과서 142~143쪽</div>
+    <h1>독립 선언문, 누구를 위한 말이었을까</h1>
+  </header>
+
+  <section id="s0" class="screen">
+    <div class="card">
+      <h2>시작하기</h2>
+      <label for="sid">학번 (5자리, 예: 30512)</label>
+      <input id="sid" inputmode="numeric" maxlength="5" autocomplete="off">
+      <label for="sname">이름</label>
+      <input id="sname" autocomplete="off">
+      <p id="startErr" class="err" role="alert"></p>
+      <button id="startBtn" class="btn">시작</button>
+    </div>
+  </section>
+
+  <section id="s1" class="screen" hidden>
+    <div class="card"><h2>① 식민지 대표가 되어 써 보기</h2><p id="step1Intro"></p></div>
+    <div class="card">
+      <h3>흐름 먼저 읽기</h3>
+      <ol id="timeline" class="timeline"></ol>
+    </div>
+    <div class="card">
+      <h3>독립이 필요한 이유, 하나만 골라 봐</h3>
+      <div id="eventCards" class="choice-grid"></div>
+    </div>
+    <div class="card">
+      <h3>선언문 문장 하나를 골라 봐</h3>
+      <p class="note">교과서 143쪽 「독립 선언문」 상자를 펼쳐 놓고 골라.</p>
+      <details id="declSourceBox" hidden><summary>선언문 글 펼치기</summary><p id="declSource" class="source-text"></p></details>
+      <div id="declCards" class="choice-grid one"></div>
+    </div>
+    <div class="card">
+      <h3>글쓰기</h3>
+      <details class="hint"><summary>💡 막막하면 힌트 보기</summary>
+        <ul id="step1Hints"></ul>
+        <div class="chips-label">시작 구절 (골라서 이어 써도 돼)</div>
+        <div id="step1Chips" class="chips"></div>
+      </details>
+      <textarea id="step1Text" rows="7" placeholder="3~5문장으로 써 봐"></textarea>
+      <div class="count"><span id="step1Count">0</span>자 · <span id="step1Msg"></span></div>
+      <button id="step1Submit" class="btn" disabled>초안 제출</button>
+      <p id="step1Err" class="err" role="alert"></p>
+    </div>
+    <div class="card" id="exampleCard">
+      <button id="exampleBtn" class="btn ghost" disabled>다른 대표가 쓴 글 보기 (제출하면 열려)</button>
+      <div id="examples" hidden></div>
+    </div>
+    <button id="toStep2" class="btn wide" hidden>다음: 다른 입장에서 읽기</button>
+  </section>
+
+  <section id="s2" class="screen" hidden>
+    <div class="card recap">
+      <h2>② 다른 입장에서 읽기</h2>
+      <div class="recap-label">내가 쓴 글</div>
+      <p id="recapText" class="recap-text"></p>
+      <div class="recap-label">내가 고른 선언문 문장</div>
+      <p id="recapDecl" class="recap-text"></p>
+    </div>
+    <div class="card">
+      <h3>이 사람들 중 1~2명의 입장에서 읽어 봐</h3>
+      <div id="roleTabs" class="choice-grid"></div>
+      <p id="roleErr" class="err" role="alert"></p>
+    </div>
+    <div id="roleForms"></div>
+    <button id="toStep3" class="btn wide">다음: 마무리</button>
+    <p id="s2Err" class="err" role="alert"></p>
+  </section>
+
+  <section id="s3" class="screen" hidden>
+    <div class="card">
+      <h2>③ 마무리</h2>
+      <p class="prompt" id="finalPrompt"></p>
+      <details class="hint"><summary>💡 막막하면 힌트 보기</summary><ul id="finalHints"></ul></details>
+      <textarea id="finalLine" rows="3"></textarea>
+      <p id="s3Err" class="err" role="alert"></p>
+      <button id="finishBtn" class="btn">저장하고 패들렛 글 만들기</button>
+    </div>
+    <div class="card" id="outCard" hidden>
+      <h3>패들렛에 올릴 글</h3>
+      <textarea id="outText" rows="12" readonly></textarea>
+      <div class="btn-row">
+        <button id="copyBtn" class="btn">텍스트 복사</button>
+        <a id="padletBtn" class="btn ghost" target="_blank" rel="noopener">우리 반 패들렛 열기</a>
+      </div>
+      <p id="outMsg" class="note" role="status"></p>
+    </div>
+  </section>
+</main>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
