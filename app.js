@@ -507,6 +507,7 @@ function init() {
   renderFind();
   renderStep1();
   buildRoleForms();
+  Glossary.start({ terms: GLOSSARY }); // 어려운 낱말 풀이 (glossary.js)
 }
 
 init();
