@@ -90,8 +90,9 @@ function hintBox(list) {
   return d;
 }
 
-function textField(rows, onInput, placeholder) {
+function textField(rows, onInput, placeholder, draftName) {
   const ta = el("textarea");
+  if (draftName) ta.setAttribute("data-draft", draftName); // 임시저장 칸 이름(칸 순서가 바뀌어도 같은 칸에 복원)
   ta.rows = rows; if (placeholder) ta.placeholder = placeholder;
   ta.addEventListener("input", () => onInput(ta.value));
   return ta;
@@ -141,6 +142,7 @@ function startApp() {
   $("startErr").textContent = "";
   const p = parseSid(sid);
   S.sid = sid; S.name = name; S.ban = p.ban;
+  if (window.DraftGuard) DraftGuard.start({ key: CONFIG.GAME_NAME, sid: sid }); // 글쓰기 칸 임시저장 (history26 v75)
   loadPadletUrl(p.grade, p.ban).then(u => { S.padletUrl = u; });
   show("a1");
 }
@@ -155,7 +157,7 @@ function renderFind() {
     card.appendChild(el("h3", "", fc.emoji + " " + fc.head));
     card.appendChild(el("p", "prompt", fc.q));
     card.appendChild(hintBox(fc.hints));
-    card.appendChild(textField(2, v => { S.find[fc.id] = v; }, FIND_PLACEHOLDER));
+    card.appendChild(textField(2, v => { S.find[fc.id] = v; }, FIND_PLACEHOLDER, "find_" + fc.id));
     $(i < 2 ? "findA1" : "findA2").appendChild(card);
   });
 
@@ -350,7 +352,7 @@ function buildRoleForm(rc) {
   p1.appendChild(radioGroup(REACHED_OPTS, v => { c.reached = v; }));
   p1.appendChild(el("div", "q", "② 이유 — " + rc.reasonPrompt));
   p1.appendChild(hintBox(rc.hints));
-  p1.appendChild(textField(3, v => { c.reason = v; }));
+  p1.appendChild(textField(3, v => { c.reason = v; }, "", "reason_" + rc.id));
 
   p2.appendChild(el("div", "q first", LIMIT_Q));
   p2.appendChild(radioGroup(LIMIT_OPTS, v => { c.limitJudgement = v; }));
@@ -358,7 +360,7 @@ function buildRoleForm(rc) {
     const bb = el("div", "bubble-box");
     bb.appendChild(el("div", "q", "④ 💬 말풍선 한마디"));
     bb.appendChild(el("p", "", BUBBLE_PROMPT));
-    bb.appendChild(textField(2, v => { c.bubble = v; }));
+    bb.appendChild(textField(2, v => { c.bubble = v; }, "", "bubble_" + rc.id));
     p2.appendChild(bb);
   }
   form.append(p1, p2);
@@ -467,6 +469,7 @@ async function finish() {
     return;
   }
   S.sending = false;
+  if (window.DraftGuard) DraftGuard.clear(); // 저장 성공 → 임시저장 삭제
   $("finalLine").readOnly = true;
   $("outText").value = buildOutText();
   const link = S.padletUrl || PADLET_BY_BAN[S.ban];
